@@ -1,6 +1,4 @@
-import webpackNodeExternals from "webpack-node-externals";
-
-const nodeExternals = webpackNodeExternals();
+const nodeExternals = require('webpack-node-externals')
 
 mudule.exports = {
     target: 'node',
