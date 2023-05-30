@@ -1,7 +1,5 @@
-const nodeExternals = require('webpack-node-externals')
+import nodeExternals from 'webpack-node-externals'
 
-module.exports = {
-    target: 'node',
-    externals: [nodeExternals()],
-    entry: './'
-  }
+export const target = 'node'
+export const externals = [nodeExternals()]
+export const entry = './'
