@@ -4,7 +4,7 @@ const target = 'node'
 const externals = [nodeExternals()]
 const entry = './'
 
-export {
+export default {
     target,
     externals,
     entry
