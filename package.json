@@ -23,6 +23,7 @@
     "dotenv": "^16.1.1",
     "express": "^4.18.2",
     "swagger-cli": "^4.0.4",
+    "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^4.6.3",
     "yamljs": "^0.3.0"
   },
