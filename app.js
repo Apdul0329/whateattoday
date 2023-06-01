@@ -15,9 +15,12 @@ dotenv.config();
 
 const app = express()
 
-const port = process.env.SERVER_PORT || 8000;
+const port = process.env.PORT || 8000;
 
-app.use(cors());
+app.use(cors({
+    origin: '*',
+    credentials: true
+}));
 
 /*
 * 세션을 사용하기 위해 'express-session' 모듈을 session에 할당하고 미들웨어 사용

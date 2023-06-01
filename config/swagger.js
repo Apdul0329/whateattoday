@@ -1,7 +1,8 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-const port = process.env.SERVER_PORT || 8000;
+const port = process.env.PORT || 8000;
+const serverPort = process.env.SERVER_PORT;
 const ip = process.env.SERVER_IP;
 
 const options = {
@@ -14,16 +15,16 @@ const options = {
         },
         servers: [
             {
-                url: `http://localhost:80`
+                url: `http://localhost:${port}`
             },
             {
-                url: `http://${ip}:80`
+                url: `http://${ip}:${serverPort}`
             },
             {
                 url: `https://localhost:${port}`
             },
             {
-                url: `https://${ip}:${port}`
+                url: `https://${ip}:${serverPort}`
             },
         ],
     },
