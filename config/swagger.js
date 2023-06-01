@@ -14,7 +14,7 @@ const options = {
         },
         servers: [
             {
-                url: `http://localhost:${port}`
+                url: `http://node_web:${port}`
             },
             {
                 url: `http://${ip}:${port}`
