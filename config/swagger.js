@@ -14,7 +14,7 @@ const options = {
         },
         servers: [
             {
-                url: `http://node_web:${port}`
+                url: `http://node_web:80`
             },
             {
                 url: `http://${ip}:${port}`
