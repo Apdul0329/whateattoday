@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const port = process.env.SERVER_PORT || 8000;
+const ip = process.env.SERVER_IP;
 
 const options = {
     swaggerDefinition: {
@@ -16,17 +17,17 @@ const options = {
                 url: `http://localhost:${port}`
             },
             {
-                url: `http://49.247.148.23:${port}`
+                url: `http://${ip}:${port}`
             },
             {
                 url: `https://localhost:${port}`
             },
             {
-                url: `https://49.247.148.23:${port}`
+                url: `https://${ip}:${port}`
             },
         ],
     },
-    apis : ["./routes/*.js", "./swagger/*"],
+    apis : ["./router/*.js", "./swagger/*"],
 };
 
 export default options;
