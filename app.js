@@ -11,6 +11,7 @@ import cookieParser from 'cookie-parser';
 import { handleError } from './middleware/errorHandler.js';
 import userRouter from './router/user.js';
 import postRouter from './router/post.js';
+import commentRouter from './router/comment.js';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -52,6 +53,7 @@ app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerJSDoc(options), {ex
 app.use(handleError);                                                                               // 발생한 오류를 한 번에 처리하기 위한 미들웨어
 app.use('/', userRouter);                                                                           // userRouter을 콜백 함수로 갖는 미들웨어
 app.use('/', postRouter);                                                                           // postRouter을 콜백 함수로 갖는 미들웨어
+app.use('/', commentRouter);                                                                        // commentRouter을 콜백 함수로 갖는 미들웨어
 http.createServer(app).listen(port, () => {
     console.log('start server');
 }); 
