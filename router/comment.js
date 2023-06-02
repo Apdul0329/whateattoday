@@ -1,0 +1,456 @@
+// express 모듈을 사용.
+import { Router } from 'express';
+/**
+ * @swagger
+ * tags:
+ *  name: Comment
+ *  description: Comments's Router
+ */
+
+// express 모듈의 Router()를 사용해 router 생성
+const commentRouter = Router();
+
+import { writeComment, showComment, showAllComments, editComment, deleteComment } from '../controller/commentController.js';
+
+import { writeCommentValidationParam, makeValidationParam, inputValidationParam, validationCheck } from '../middleware/commentValidator.js';
+
+import { isLogin } from '../middleware/authChecker.js';
+
+/**
+ * @swagger
+ *   /comment:
+ *     post:
+ *       summary:  Create a new comment
+ *       description:  Insert comment's information from comment_information table & Response comment's information
+ *       tags:
+ *       - Comment
+ *       parameters:
+ *       - in:  query
+ *         type:  int
+ *         required: true
+ *         default:  1
+ *         name:  post_index
+ *         description:  댓글 작성 시 댓글을 포함할 게시글의 index에 해당하는 값으로 req.query.post_index로 받는다. 숫자만 입력 가능하다.
+ *       requestBody:
+ *          required:  true
+ *          description:  댓글 작성 시 필요한 댓글 정보를 입력받는 req.body이다.
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type:  object
+ *                      properties:
+ *                          content:
+ *                              type:  string
+ *                              description:  댓글 내용. 최소 1글자, 최대 300글자까지 입력할 수 있으며, 한글, 알파벳, 숫자, 특수문자를 다 허용한다.
+ *                              example:  저도 한 번 가봐야겠네요~ 오늘 점심은 여기로 갈 것 같아요!! 
+ *       responses:
+ *          "201":
+ *              description:  댓글 작성을 성공한 경우이다. 댓글 작성을 성공한 사실을 message 키를 갖는 JSON 형식으로 출력한다.
+ *              schema:
+ *                  type: object
+ *                  properties:
+ *                      message:
+ *                          type:  string
+ *                          example:  write comment success
+ *          "400":
+ *              description: 유저가 req.body와 req.query를 잘못 입력하여 유효성 검사 미들웨어에서 걸려진 경우이다. 어떤 항목에서 어떻게 잘못되었는지 문자열 형식으로 오류를 출력한다.
+ *              schema:
+ *                  type:  object
+ *                  properties:
+ *                      error:
+ *                          type:  object
+ *                          properties:
+ *                              code:
+ *                                  type:  number
+ *                                  example:  400
+ *                              message:
+ *                                  type:  string
+ *                                  example:  wrong input at content please input 1 ~ 300 chars long
+ *          "401":
+ *              description: 로그인이 안 되어 있는 경우 로그인이 필요한 페이지임을 문자열 형식으로 출력한다.
+ *              schema:
+ *                  type:  object
+ *                  properties:
+ *                      error:
+ *                          type:  object
+ *                          properties:
+ *                              code:
+ *                                  type:  number
+ *                                  example:  401
+ *                              message:
+ *                                  type:  string
+ *                                  example:  Login isn't running please log in    
+ *          "404":
+ *              description:  댓글을 포함하는 게시글이 없는 경우(삭제되었을 때)이다. post_index에 해당하는 게시글이 존재하지 않는다는 사실을 문자열 형식으로 출력한다.
+ *              schema:
+ *                  type:  object
+ *                  properties:
+ *                      error:
+ *                          type:  object
+ *                          properties:
+ *                              code:
+ *                                  type:  number
+ *                                  example:  404
+ *                              message:
+ *                                  type:  string
+ *                                  example:  There is no result
+ */
+commentRouter.post('/comment', isLogin, writeCommentValidationParam, validationCheck, writeComment);
+
+/**
+ * @swagger
+ *   /comment/{comment_index}:
+ *     get:
+ *       summary: Select comment's information
+ *       description: Select comment's information from comment_information table & Response one comment's information
+ *       tags:
+ *       - Comment
+ *       parameters:
+ *       - in:  path
+ *         type:  int
+ *         required:  true
+ *         default:  1
+ *         name:  comment_index
+ *         description:  상세조회 하고자 하는 댓글에 해당하는 댓글 Index로 req.params로 받는다. 숫자만 입력 가능하다.
+ *       produces:
+ *       - application/json
+ *         text/plain
+ *       responses:
+ *          "200":
+ *              description: 댓글 출력 성공으로 DB 테이블에서 req.params의 값을 comments_index로 갖는 row의 정보를 JSON 형식으로 출력한다.
+ *              schema:
+ *                  type: object
+ *                  properties:
+ *                      writer:
+ *                          type:  string
+ *                      date:
+ *                          type:  string
+ *                      content:
+ *                          type:  string
+ *          "400":
+ *              description: req.params.comment_index를 잘못 입력했을 경우 오류가 발생한 이유를 문자열 형식으로 출력한다.
+ *              schema:
+ *                  type:  object
+ *                  properties:
+ *                      error:
+ *                          type:  object
+ *                          properties:
+ *                              code:
+ *                                  type:  number
+ *                                  example:  400
+ *                              message:
+ *                                  type:  string
+ *                                  example:  wrong input at comment_Index please input int
+ *          "401":
+ *              description: 로그인이 안 되어 있는 경우 로그인이 필요한 페이지임을 문자열 형식으로 출력한다.
+ *              schema:
+ *                  type:  object
+ *                  properties:
+ *                      error:
+ *                          type:  object
+ *                          properties:
+ *                              code:
+ *                                  type:  number
+ *                                  example:  401
+ *                              message:
+ *                                  type:  string
+ *                                  example:  Login isn't running please log in          
+ *          "404":
+ *              description: DB에서 찾는 댓글이 없는 경우(삭제되었거나 해당하는 index가 없을 때) 해당 정보가 없음을 문자열 형식으로 출력한다.
+ *              schema:
+ *                  type:  object
+ *                  properties:
+ *                      error:
+ *                          type:  object
+ *                          properties:
+ *                              code:
+ *                                  type:  number
+ *                                  example:  404
+ *                              message:
+ *                                  type:  string
+ *                                  example: There is no result
+ */
+commentRouter.get('/comment/:comment_index', isLogin, inputValidationParam, validationCheck, showComment);
+
+/**
+ * @swagger
+ *   /comments:
+ *     get:
+ *       summary: Select comments' information with pagination
+ *       description: Select comments' information from comment_information table & Response comments' information with pagination
+ *       tags:
+ *       - Comment
+ *       parameters:
+ *       - in:  query
+ *         type:  int
+ *         required: true
+ *         default:  1
+ *         name:  post_index
+ *         description:  댓글 작성 시 댓글을 포함할 게시글의 index에 해당하는 값으로 req.query.post_index로 받는다. 숫자만 입력 가능하다.
+ *       - in:  query
+ *         type:  int
+ *         required:  true
+ *         default:  1
+ *         name:  page
+ *         description:  페이지네이션할 때, 페이지에 해당하는 값으로 req.query.page로 받는다. 숫자만 입력 가능하다.
+ *       - in:  query
+ *         type:  int
+ *         required:  true
+ *         default:  4
+ *         name:  page_size
+ *         description:  페이지네이션할 때, 페이지 크기에 해당하는 값으로 req.query.page_size로 받는다. 숫자만 입력 가능하다.
+ *       produces:
+ *       - application/json
+ *         text/plain
+ *       responses:
+ *          "200":
+ *              description: 댓글 목록 출력 성공으로 DB 테이블에서 req.query.post_index 값을 related_post로 갖는 rows를 req.query의 페이지와 페이지 크기만큼의 댓글 목록을 JSON 형식으로 출력한다.
+ *              schema:
+ *                  type: array
+ *                  items:
+ *                      type: object
+ *                      properties:
+ *                          writer:
+ *                              type:  string
+ *                          date:
+ *                              type:  string
+ *                          content:
+ *                              type:  string
+ *          "400":
+ *              description: req.query(post_index, page, page_size)를 잘못 입력해 유효성 검사 미들웨어에서 걸러지는 경우이다. 오류가 발생한 이유를 문자열 형식으로 출력한다.
+ *              schema:
+ *                  type:  object
+ *                  properties:
+ *                      error:
+ *                          type:  object
+ *                          properties:
+ *                              code:
+ *                                  type:  number
+ *                                  example:  400
+ *                              message:
+ *                                  type:  string
+ *                                  example:  wrong input at page please input int
+ *          "401":
+ *              description: 로그인이 안 되어 있는 경우 로그인이 필요한 페이지임을 문자열 형식으로 출력한다.
+ *              schema:
+ *                  type:  object
+ *                  properties:
+ *                      error:
+ *                          type:  object
+ *                          properties:
+ *                              code:
+ *                                  type:  number
+ *                                  example:  401
+ *                              message:
+ *                                  type:  string
+ *                                  example:  Login isn't running please log in          
+ *          "404":
+ *              description: req.query.post_index를 게시글 index로 갖는 게시글이 없는 경우 해당 정보가 없음을 문자열 형식으로 출력한다.
+ *              schema:
+ *                  type:  object
+ *                  properties:
+ *                      error:
+ *                          type:  object
+ *                          properties:
+ *                              code:
+ *                                  type:  number
+ *                                  example:  404
+ *                              message:
+ *                                  type:  string
+ *                                  example: There is no result
+ */
+commentRouter.get('/comments', isLogin, inputValidationParam, validationCheck, showAllComments);
+
+/**
+ * @swagger
+ *   /comment/{comment_index}:
+ *      patch:
+ *          summary:  Change comment's information
+ *          description:  Update comment's information from comment_information to user's input
+ *          tags:
+ *          - Comment
+ *          parameters:
+ *          - in:  path
+ *            type:  int
+ *            required:  true
+ *            default:  1
+ *            name:  comment_index
+ *            description:  댓글 수정을 하려는 댓글 Index로 req.params로 받는다. 숫자만 입력 가능하다.
+ *          requestBody:
+ *              required:  true
+ *              description:  수정 후의 댓글 정보를 입력받는 req.body이다. 아무 항목도 입력되어 있지 않으면 404 에러를 출력한다.
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type:  object
+ *                          properties:
+ *                              content:
+ *                                  type:  string
+ *                                  description:  댓글 내용. 최소 1글자, 최대 300글자까지 입력할 수 있으며, 한글, 알파벳, 숫자, 특수문자를 다 허용한다.
+ *                                  example:  저도 한 번 가봐야겠네요~ 오늘 점심은 여기로 갈 것 같아요!! 
+ *          responses:
+ *              "200":
+ *                  description:  댓글 수정 성공한 경우이다. 댓글 수정이 성공한 사실을 message 키를 갖는 JSON 형식으로 출력한다.
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          message:
+ *                              type:  string
+ *                              example: edit comment success
+ *              "400":
+ *                  description:  req.params.comment_index를 잘못 입력하여 유효성 검사 미들웨어에서 걸러진 경우이거나 req.body를 잘못 입력하여 유효성 검사 미들웨어에서 걸러진 경우이다. 오류가 발생한 이유를 문자열 형식으로 출력한다.
+ *                  schema:
+ *                      type:  object
+ *                      properties:
+ *                          error:
+ *                              type:  object
+ *                              properties:
+ *                                  code:
+ *                                      type:  number
+ *                                      example:  400
+ *                                  message:
+ *                                      type:  string
+ *                                      example:  wrong input at content please input 1 ~ 300 chars long
+ *              "401":
+ *                  description:  로그인이 안 되어 있는 경우 로그인이 필요한 페이지임을 문자열 형식으로 출력한다.
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          error:
+ *                              type:  object
+ *                              properties:
+ *                                  code:
+ *                                      type:  number
+ *                                      example:  401
+ *                                  message:
+ *                                      type:  string
+ *                                      example:  Login isn't running please log in
+ *              "403":
+ *                  description:  세션에 저장된 유저 ID와 댓글의 작성자 ID가 다를 경우 인가되지 않은 페이지임을 문자열 형식으로 출력한다.
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          error:
+ *                              type:  object
+ *                              properties:
+ *                                  code:
+ *                                      type:  number
+ *                                      example:  403
+ *                                  message:
+ *                                      type:  string
+ *                                      example:  you don't have authority
+ *              "404":
+ *                  description: 수정해야할 댓글 정보가 없는 경우(삭제되었을 때)나 수정할 정보를 입력하지 않았을 경우 해당 정보가 없음을 문자열 형식으로 출력한다.
+ *                  schema:
+ *                      type:  object
+ *                      properties:
+ *                          error:
+ *                              type:  object
+ *                              properties:
+ *                                  code:
+ *                                      type:  number
+ *                                      example:  404
+ *                                  message:
+ *                                      type:  string
+ *                                      example: you don't input please input anything
+ *              "409":
+ *                  description:  DB에 있는 기존의 정보와 똑같은 정보를 입력한 경우이다. 똑같은 정보를 입력했다는 사실을 문자열 형식으로 출력한다.
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          error:
+ *                              type:  object
+ *                              properties:
+ *                                  code:
+ *                                      type:  number
+ *                                      example:  409
+ *                                  message:
+ *                                      type:  string
+ *                                      example:  input same comments_content please change your input
+ */
+commentRouter.patch('/comment/:comment_index', isLogin, makeValidationParam, validationCheck, editComment);
+
+/**
+ * @swagger
+ *   /comment/{comment_index}:
+ *      delete:
+ *          summary:  Delete comment
+ *          description:  Delete comment form comment_information table
+ *          tags:
+ *          - Comment
+ *          parameters:
+ *          - in:  path
+ *            type:  int
+ *            required:  true
+ *            default:  1
+ *            name:  comment_index
+ *            description:  삭제하고자 하는 댓글에 해당하는 댓글 Index로 req.params로 받는다. 숫자만 입력 가능하다.
+ *          responses:
+ *              "204":
+ *                  description: 댓글 삭제를 성공한 경우이다. 댓글 삭제를 성공한 사실을 message 키를 갖는 JSON 형식으로 출력한다.
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          message:
+ *                              type:  string
+ *                              example:  delete comment success
+ *              "400":
+ *                  description:  req.params.comment_index를 잘못 입력했을 경우 오류가 발생한 이유를 문자열 형식으로 출력한다.
+ *                  schema:
+ *                      type:  object
+ *                      properties:
+ *                          error:
+ *                              type:  object
+ *                              properties:
+ *                                  code:
+ *                                      type:  number
+ *                                      example:  400
+ *                                  message:
+ *                                      type: string
+ *                                      example:   wrong input at comment_Index please input int
+ *              "401":
+ *                  description:  로그인이 안 되어 있는 경우 로그인이 필요한 페이지임을 문자열 형식으로 출력한다.
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          error:
+ *                              type:  object
+ *                              properties:
+ *                                  code:
+ *                                      type:  number
+ *                                      example: 401
+ *                                  message:
+ *                                      type:  string
+ *                                      example:  Login isn't running please log in
+ *              "403":
+ *                  description:  세션에 저장된 유저 ID와 댓글의 작성자 ID가 다를 경우 인가되지 않은 페이지임을 문자열 형식으로 출력한다.
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          error:
+ *                              type:  object
+ *                              properties:
+ *                                  code:
+ *                                      type:  number
+ *                                      example: 403
+ *                                  message:
+ *                                      type:  string
+ *                                      example:  you don't have authority
+ *              "404":
+ *                  description: DB에서 찾는 댓글 정보가 없는 경우(삭제되었을 때) 해당 정보가 없음을 문자열 형식으로 출력한다.
+ *                  schema:
+ *                      type:  object
+ *                      properties:
+ *                          error:
+ *                              type:  object
+ *                              properties:
+ *                                  code:
+ *                                      type:  number
+ *                                      example:  404
+ *                                  message:
+ *                                      type:  string
+ *                                      example: There is no result
+ */
+commentRouter.delete('/comment/:comment_index', isLogin, inputValidationParam, validationCheck, deleteComment);
+
+export default commentRouter;
