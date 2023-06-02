@@ -23,7 +23,7 @@ import { isLogin, isDoubleLogin } from  '../middleware/authChecker.js';
  *       summary: Select user's information
  *       description: Select user's information from user_information table & Response user's information
  *       tags:
- *       - Users
+ *       - User
  *       parameters:
  *       - in:  path
  *         type:  string
@@ -116,7 +116,7 @@ userRouter.get('/user/:user_id', isLogin, inputValidationParam, validationCheck,
  *          summary:  Create a new user
  *          description:  Insert new user's information into user_information table
  *          tags:
- *          - Users
+ *          - User
  *          requestBody:
  *              required: true
  *              description:  회원가입 시 필요한 회원정보를 입력받는 req.body이다.
@@ -207,7 +207,7 @@ userRouter.post('/signup', signUpValidationParam, validationCheck, signUp);
  *          summary:  LogIn user
  *          description: Select user's information from user_information table & compare user's input id,pw
  *          tags:
- *          - Users
+ *          - User
  *          requestBody:
  *              description: 로그인 시 회원 ID/PW를 받는 req.body이다.
  *              required:  true
@@ -300,7 +300,7 @@ userRouter.post('/login', isDoubleLogin, logInValidationParam, validationCheck, 
  *          summary:  Change user's information
  *          description: Update user's information from user_information to user's input
  *          tags:
- *          - Users
+ *          - User
  *          parameters:
  *          - in:  path
  *            type:  string
@@ -422,7 +422,7 @@ userRouter.patch('/user/:user_id', isLogin, inputValidationParam, makeValidation
  *          summary:  Change user's password
  *          description: Update user's password from user_information table to user's input
  *          tags:
- *          - Users
+ *          - User
  *          requestBody:
  *              required: true
  *              description:  회원 비밀번호 수정을 위해 기존 비밀번호, 바꿀 비밀번호, 바꾼 비밀번호 확인을 위한 req.body이다.
@@ -533,7 +533,7 @@ userRouter.patch('/password', isLogin, changePwValidationParam, validationCheck,
  *          summary:  Logout user
  *          description:  Destroy user's session for logout
  *          tags:
- *          - Users
+ *          - User
  *          produces:
  *          - text/plain
  *          responses:
@@ -584,7 +584,7 @@ userRouter.post('/logout', isLogin, logOut);
  *          summary:  Withdrawal user's membership
  *          description:  Delete user's information form user_information table
  *          tags:
- *          - Users
+ *          - User
  *          requestBody:
  *              required:  true
  *              description:  회원탈퇴로 회원정보를 삭제하기 전, 사용자 인증을 위해 회원 비밀번호를 req.body로 받는다.

@@ -23,7 +23,7 @@ import { isLogin } from  '../middleware/authChecker.js';
  *       summary:  Create a new post
  *       description:  Insert post's information from post_information table & Response post's information
  *       tags:
- *       - Posts
+ *       - Post
  *       requestBody:
  *          required:  true
  *          description:  게시글 작성 시 필요한 게시글 정보를 입력받는 req.body이다.
@@ -102,7 +102,7 @@ postRouter.post('/post', isLogin, writePostValidationParam, validationCheck, wri
  *       summary: Select post's information with pagination and search function
  *       description: Select posts' information from post_information table & Response posts' information with page and search function
  *       tags:
- *       - Posts
+ *       - Post
  *       parameters:
  *       - in:  query
  *         type:  int
@@ -199,7 +199,7 @@ postRouter.get('/posts', isLogin, inputValidationParam, validationCheck, showAll
  *       summary: Select post's information
  *       description: Select post's information from post_information table & Response post's information
  *       tags:
- *       - Posts
+ *       - Post
  *       parameters:
  *       - in:  path
  *         type:  int
@@ -278,7 +278,7 @@ postRouter.get('/post/:post_index', isLogin, inputValidationParam, validationChe
  *          summary:  Change post's information
  *          description:  Update post's information from post_information to user's input
  *          tags:
- *          - Posts
+ *          - Post
  *          parameters:
  *          - in:  path
  *            type:  int
@@ -391,7 +391,7 @@ postRouter.patch('/post/:post_index', isLogin, makeValidationParam, validationCh
  *          summary:  Delete post
  *          description:  Delete post form post_information table
  *          tags:
- *          - Posts
+ *          - Post
  *          parameters:
  *          - in:  path
  *            type:  int
