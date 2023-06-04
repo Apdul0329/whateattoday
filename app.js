@@ -1,4 +1,3 @@
-//express 모듈을 사용
 import express, { json, urlencoded } from 'express';
 import http from 'http';
 import cors from 'cors';
@@ -14,9 +13,9 @@ import postRouter from './router/post.js';
 import commentRouter from './router/comment.js';
 import restaurantRouter from './router/restaurant.js';
 import dotenv from 'dotenv';
-
 dotenv.config();
 
+//express 모듈을 사용
 const app = express()
 
 const port = process.env.PORT || 8000;

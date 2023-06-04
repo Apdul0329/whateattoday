@@ -28,7 +28,7 @@ const options = {
             },
         ],
     },
-    apis : ["./router/*.js", "./swagger/*"],
+    apis : ["./swagger/*"],
 };
 
 export default options;
