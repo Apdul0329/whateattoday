@@ -1,5 +1,4 @@
 import {check, param, validationResult} from 'express-validator'
-
 import { errorGenerator } from './errorHandler.js';
 
 const checkPasswordPattern = (str) => { 

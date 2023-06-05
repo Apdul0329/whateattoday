@@ -1,6 +1,5 @@
 // 에러 핸들러 미들웨어로 에러를 보내주는 모듈
 import { errorGenerator } from '../middleware/errorHandler.js';
-
 import { createPost, getPost, getPostWithFilter, increaseView, findWriter, changePost, clearPost } from '../model/postModel.js';
 
 const postCreate = async (req) => {

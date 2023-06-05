@@ -1,14 +1,11 @@
 // express 모듈을 사용.
 import { Router } from 'express';
+import { writeComment, showComment, showAllComments, editComment, deleteComment } from '../controller/commentController.js';
+import { writeCommentValidationParam, makeValidationParam, inputValidationParam, validationCheck } from '../middleware/commentValidator.js';
+import { isLogin } from '../middleware/authChecker.js';
 
 // express 모듈의 Router()를 사용해 router 생성
 const commentRouter = Router();
-
-import { writeComment, showComment, showAllComments, editComment, deleteComment } from '../controller/commentController.js';
-
-import { writeCommentValidationParam, makeValidationParam, inputValidationParam, validationCheck } from '../middleware/commentValidator.js';
-
-import { isLogin } from '../middleware/authChecker.js';
 
 commentRouter.post('/comment', isLogin, writeCommentValidationParam, validationCheck, writeComment);
 

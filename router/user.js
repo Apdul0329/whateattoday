@@ -1,14 +1,11 @@
 // express 모듈을 사용.
 import { Router } from 'express';
+import { signUpValidationParam, logInValidationParam, makeValidationParam, changePwValidationParam, inputValidationParam, deleteUserValidationParam, validationCheck } from '../middleware/userValidator.js'
+import { showInform, signUp, logIn, logOut, changeInform, changePw, deleteUser } from '../controller/userController.js';
+import { isLogin, isDoubleLogin } from  '../middleware/authChecker.js';
 
 // express 모듈의 Router()를 사용해 router 생성
 const userRouter = Router();
-
-import { signUpValidationParam, logInValidationParam, makeValidationParam, changePwValidationParam, inputValidationParam, deleteUserValidationParam, validationCheck } from '../middleware/userValidator.js'
-
-import { showInform, signUp, logIn, logOut, changeInform, changePw, deleteUser } from '../controller/userController.js';
-
-import { isLogin, isDoubleLogin } from  '../middleware/authChecker.js';
 
 // 회원 정보 출력 라우터
 userRouter.get('/user/:user_id', isLogin, inputValidationParam, validationCheck, showInform);

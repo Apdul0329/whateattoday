@@ -1,15 +1,11 @@
 // express 모듈을 사용.
 import { Router } from 'express';
+import { writePostValidationParam, makeValidationParam, inputValidationParam, validationCheck} from '../middleware/postValidator.js';
+import { writePost, showPost, editPost, deletePost, showAllPosts } from '../controller/postController.js';
+import { isLogin } from  '../middleware/authChecker.js';
 
 // express 모듈의 Router()를 사용해 router 생성
 const postRouter = Router();
-
-import { writePostValidationParam, makeValidationParam, inputValidationParam, validationCheck} from '../middleware/postValidator.js';
-
-import { writePost, showPost, editPost, deletePost, showAllPosts } from '../controller/postController.js';
-
-import { isLogin } from  '../middleware/authChecker.js';
-
 
 postRouter.post('/post', isLogin, writePostValidationParam, validationCheck, writePost);
 

@@ -1,5 +1,4 @@
 import { whatEatTodayPool } from '../config/whatEatTodayDB.js';
-
 import { errorGenerator } from '../middleware/errorHandler.js';
 
 const createComment = async (data) => {
