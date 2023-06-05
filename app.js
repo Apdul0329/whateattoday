@@ -51,11 +51,11 @@ app.use(json());
 app.use(urlencoded({extended: false}));
 
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerJSDoc(options), {explorer: true}));    // Swagger 적용
-app.use(handleError);                                                                               // 발생한 오류를 한 번에 처리하기 위한 미들웨어
 app.use('/', userRouter);                                                                           // userRouter을 콜백 함수로 갖는 미들웨어
 app.use('/', postRouter);                                                                           // postRouter을 콜백 함수로 갖는 미들웨어
 app.use('/', commentRouter);                                                                        // commentRouter을 콜백 함수로 갖는 미들웨어
 app.use('/', restaurantRouter);                                                                     // restaurantRouter을 콜백 함수로 갖는 미들웨어
+app.use(handleError);                                                                               // 발생한 오류를 한 번에 처리하기 위한 미들웨어
 http.createServer(app).listen(port, () => {
     console.log('start server');
 }); 
