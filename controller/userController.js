@@ -71,7 +71,7 @@ const logOut = async (req, res, next) => {
 // 회원정보 수정 컨트롤러 콜백 함수
 const changeInform = async (req, res, next) => {
     try {
-        const message = await userEdit(req.session);
+        const message = await userEdit(req);
         const result = {
             message : message
         }
