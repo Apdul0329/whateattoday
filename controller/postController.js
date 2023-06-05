@@ -5,7 +5,7 @@ import { postCreate, postShow, postEdit, postDelete, postShowAll } from '../serv
 */
 const writePost = async (req, res, next) => {
     try {
-        let message = await postCreate(req);
+        const message = await postCreate(req);
         const result = {
             message : message
         }
