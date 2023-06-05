@@ -8,10 +8,10 @@ import session from 'express-session';
 import sessionStore from 'session-file-store';
 import cookieParser from 'cookie-parser';
 import { handleError } from './middleware/errorHandler.js';
-import userRouter from './router/user.js';
-import postRouter from './router/post.js';
-import commentRouter from './router/comment.js';
-import restaurantRouter from './router/restaurant.js';
+import userRouter from './route/user.js';
+import postRouter from './route/post.js';
+import commentRouter from './route/comment.js';
+import restaurantRouter from './route/restaurant.js';
 import dotenv from 'dotenv';
 dotenv.config();
 
