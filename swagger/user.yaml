@@ -225,7 +225,7 @@ paths:
                              userPw:
                                  type:  string
                                  description:  회원 PW. 영어 대소문자, 숫자, 서버에서 정한 특수문자(~!@#$%^&*()_+|<>?:{})만 가능하고 최소 8글자, 최대 15글자까지 입력 가능하다.
-                                 example:  admin@1234
+                                 example:  admin@5678
                              userName:
                                  type:  string
                                  description: 회원 이름. 한글만 가능하고 최소 2글자, 최대 5글자까지 입력 가능하다.
