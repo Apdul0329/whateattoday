@@ -13,7 +13,7 @@ paths:
       - in:  path
         type:  string
         required:  true
-        default:  zziddae
+        default:  admin
         name:  user_id
         description:  해당 회원정보에 해당하는 회원 ID로 req.params로 받는다. 영어만 입력 가능하며 최소 4, 최대 10글자로 입력받아야 한다.
       produces:
@@ -98,7 +98,7 @@ paths:
          - in:  path
            type:  string
            required:  true
-           default:  zziddae
+           default:  admin
            name:  user_id
            description:  회원정보 수정을 하려는 회원 ID로 req.params로 받는다. 영어만 입력 가능하며 최소 4, 최대 10글자로 입력받아야 한다.
          requestBody:
@@ -112,19 +112,19 @@ paths:
                              userId:
                                  type:  string
                                  description:  수정할 회원 ID. 영어 대소문자만 가능하고 최소 4글자, 최대 10글자까지 입력 가능하다.
-                                 example:  zziddae
+                                 example:  admin
                              userName:
                                  type:  string
                                  description:  수정할 회원 이름. 한글만 가능하고 최소 2글자, 최대 5글자까지 입력 가능하다.
-                                 example:  노근우
+                                 example:  홍길동
                              userBirthday:
                                  type:  string
                                  description:  수정할 회원 생년월일. 문자열로 받으며 "xxxx-xx-xx" 형식으로 입력받아야 한다. 년도는 1900년부터 2000년대까지 입력 가능하고, 달과 일은 각각 1~12, 01~31까지 입력 가능하다.
-                                 example: 1999-03-29
+                                 example: 1999-01-01
                              userPhoneNum:
                                  type:  string
                                  description:  수정할 회원 핸드폰 번호. 문자열로 받으며 "xxx-xxxx-xxx" 형식으로 입력받아야 한다.
-                                 example: 010-6774-2052
+                                 example: 010-1234-1234
          responses:
              "200":
                  description:  회원정보 수정 성공한 경우이다. 회원정보 수정이 성공한 사실을 message 키를 갖는 JSON 형식으로 출력한다.
@@ -221,23 +221,23 @@ paths:
                              userId:
                                  type:  string
                                  description:  회원 ID. 영어 대소문자만 가능하고 최소 4글자, 최대 10글자까지 입력 가능하다.
-                                 example:  zziddae
+                                 example:  admin
                              userPw:
                                  type:  string
                                  description:  회원 PW. 영어 대소문자, 숫자, 서버에서 정한 특수문자(~!@#$%^&*()_+|<>?:{})만 가능하고 최소 8글자, 최대 15글자까지 입력 가능하다.
-                                 example:  Tico@2067
+                                 example:  admin@1234
                              userName:
                                  type:  string
                                  description: 회원 이름. 한글만 가능하고 최소 2글자, 최대 5글자까지 입력 가능하다.
-                                 example:  노근우
+                                 example:  홍길동
                              userBirthday:
                                  type:  string
                                  description:  회원 생년월일. 문자열로 받으며 "xxxx-xx-xx" 형식으로 입력받아야 한다. 년도는 1900년부터 2000년대까지 입력 가능하고, 달과 일은 각각 1~12, 01~31까지 입력 가능하다.
-                                 example: 1999-03-29
+                                 example: 1999-01-01
                              userPhoneNum:
                                  type:  string
                                  description:  회원 핸드폰 번호. 문자열로 받으며 "xxx-xxxx-xxx" 형식으로 입력받아야 한다. 
-                                 example: 010-6774-2052
+                                 example: 010-1234-1234
          responses:
              "201":
                  description:  회원가입 성공한 경우이다. 회원가입 성공한 사실을 message 키를 갖는 JSON 형식으로 출력한다.
@@ -306,11 +306,11 @@ paths:
                              userId:
                                  type:  string
                                  description:  회원 ID. 영어 대소문자만 가능하고 최소 4글자, 최대 10글자까지 입력 가능하다.
-                                 example:  zziddae
+                                 example:  admin
                              userPw:
                                  type:  string
                                  description:  회원 PW. 영어 대소문자, 숫자, 서버에서 정한 특수문자(~!@#$%^&*()_+|<>?:{})만 가능하고 최소 8글자, 최대 15글자까지 입력 가능하다.
-                                 example:  Tico@2067
+                                 example:  admin@1234
          responses:
              "200":
                  description:  로그인이 성공한 경우이다. 로그인 성공을 message 키를 갖는 JSON 형식으로 출력한다.
@@ -393,15 +393,15 @@ paths:
                              userPw:
                                  type:  string
                                  description:  기존 회원 PW. 영어 대소문자, 숫자, 서버에서 정한 특수문자(~!@#$%^&*()_+|<>?:{})만 가능하고 최소 8글자, 최대 15글자까지 입력 가능하다.
-                                 example:  Tico@2067
+                                 example:  admin@1234
                              inputPw:
                                  type:  string
                                  description: 수정할 회원 PW. 영어 대소문자, 숫자, 서버에서 정한 특수문자(~!@#$%^&*()_+|<>?:{})만 가능하고 최소 8글자, 최대 15글자까지 입력 가능하다.
-                                 example: shrmsdn@2067
+                                 example: admin@5678
                              checkPw:
                                  type:  string
                                  description: 수정한 회원 PW 확인. 영어 대소문자, 숫자, 서버에서 정한 특수문자(~!@#$%^&*()_+|<>?:{})만 가능하고 최소 8글자, 최대 15글자까지 입력 가능하다. 만약, inputPw와 다르면 400 에러를 출력한다.
-                                 example: shrmsdn@2067
+                                 example: admin@5678
          responses:
              "200":
                  description:  회원 비밀번호 변경을 성공한 경우이다. 회원 비밀번호 변경이 성공한 사실을 message 키를 갖는 JSON 형식으로 출력한다.
@@ -543,7 +543,7 @@ paths:
                              inputPw:
                                  type:  string
                                  description:  회원탈퇴 전 사용자 인증을 위해 회원 비밀번호. 영어 대소문자, 숫자, 서버에서 정한 특수문자(~!@#$%^&*()_+|<>?:{})만 가능하고 최소 8글자, 최대 15글자까지 입력 가능하다.
-                                 example:  shrmsdn@2067
+                                 example:  admin@1234
          responses:
              "204":
                  description: 회원탈퇴를 성공한 경우이다. 회원탈퇴 성공한 사실을 message 키를 갖는 JSON 형식으로 출력한다.
