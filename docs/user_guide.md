@@ -8,4 +8,3 @@
     - You can test the REST API on this page
 - ```Servers``` must be selected as ```http://YOUR_SERVER_IP:80```
     - Origins starting with http://localhost are for development purposes
-- 
